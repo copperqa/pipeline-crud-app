@@ -9,7 +9,7 @@ pipeline {
         stage('Downloading Dependencies') {
             steps {
                 sh '''
-                curl -sL https://deb.nodesource.com/setup_16.x && sudo -n bash -
+                curl -sL https://deb.nodesource.com/setup_16.x && sudo bash -
                 sudo apt-get install -y nodejs
                 '''
             }
