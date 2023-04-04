@@ -16,5 +16,10 @@ pipeline {
                 sh 'npm run lint'
             }
         }
+        stage('Running Application') {
+            steps{
+                sh 'npm run start'
+            }
+        }
     }
 }
