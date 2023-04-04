@@ -13,6 +13,8 @@ pipeline {
         }
         stage('Pre-commit check') {
             steps{
+                sh 'result=${PWD##*/}'
+                sh 'git config --global --add safe.directory /var/lib/jenkins/workspace/$result'
                 sh 'talisman --scan -r /home/user/Desktop/'
             }
         }
