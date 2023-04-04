@@ -11,6 +11,11 @@ pipeline {
                 sh 'npm install'
             }
         }
+        stage('Pre-commit check') {
+            steps{
+                sh 'talisman --scan -r /home/user/Desktop/'
+            }
+        }
         stage('Linting Stage') {
             steps{
                 sh 'npm run lint'

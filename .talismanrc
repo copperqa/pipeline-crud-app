@@ -1,0 +1,22 @@
+fileignoreconfig:
+- filename: talisman_html_report/css/bootstrap.min.css
+  checksum: 78b16deaf26c127ee1877e41d1eebb8f4995c264f9912c450223fd37e77e7ee5
+- filename: talisman_html_report/css/fontAwesome.css
+  checksum: 3097906f3a4804e713f86c38f97e375a6723af4a7cf174a90fbd502e314850c4
+- filename: talisman_html_report/data/report.json
+  checksum: e46c7d51bb13b37554969d88430422ef3ee3bf71cb03c6a97e2ef07ec7c81d55
+- filename: talisman_html_report/fonts/fontawesome-webfont.svg
+  checksum: 1e9bd00cc11a8d4e1f8c38d6bf1fdf2a7fec199a2b24a12e3a2a4d914efcbda1
+- filename: talisman_html_report/js/jquery-1.12.1.min.js
+  checksum: 0bfb1caa0effed9240dfb4161ab2f0b9fa564e4ff45689cd20aebe9684c5dca3
+- filename: talisman_html_report/js/paging.js
+  checksum: 78206ed27f4867f612ef105739a38c6b06820b5b411574cd8641ff1a0289ea6c
+- filename: talisman_html_report/js/plugins.js
+  checksum: 51aaf3ac90774de64321f984c18770d24827e5413d555ba46509ef59e691422d
+- filename: talisman_html_report/js/vendor/bootstrap.min.js
+  checksum: 946a577373ffc01a79b85dc995439861f9d36ef52786923498a553cb7b95485d
+- filename: talisman_html_report/js/vendor/jquery-1.11.2.min.js
+  checksum: 1445dbc81a16481767ae937dc1bc21d10800b962a4b1ff38148508d3e691d657
+- filename: talisman_html_report/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js
+  checksum: 5ac1f2779b5c7907ae5a32dad5561645b288e0bd18842f863b7364eed2adcb96
+version: "1.0"

@@ -42,7 +42,7 @@ node_modules/
 jspm_packages/
 public/index.html
 package-lock.json
-
+talisman_html_report/
 # TypeScript v1 declaration files
 typings/
 
