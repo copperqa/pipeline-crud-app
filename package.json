@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "homepage": "https://rahulfaujdar.github.io/react-crud-application",
+  "homepage": "https://github.com/copperdevops/nestjs-crud-app.git",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -13,7 +13,7 @@
     "deploy": "gh-pages -d build"
   },
   "keywords": [],
-  "author": "Rahul Faujdar",
+  "author": "Uday Guleria",
   "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
