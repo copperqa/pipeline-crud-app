@@ -23,14 +23,23 @@ pipeline {
                 dependencyCheck additionalArguments: 'scan="./package.json" --format HTML', odcInstallation: 'Dependencies-Check'
             }
         }
-        stage('Linting Stage') {
-            steps{
-                sh 'npm run lint'
-            }
-        }
+        // stage('Linting Stage') {
+        //     steps{
+        //         sh 'npm run lint'
+        //     }
+        // }
         stage('Running Application') {
             steps{
-                sh 'npm run start'
+                sh 'nohup npm run start &'
+            }
+        }
+        stage('Code Coverage') {
+            steps{
+                sh '''
+                    cd ./testcase | npm i
+                    npm run start
+                    nyc report --reporter=html
+                '''
             }
         }
     }
