@@ -30,7 +30,7 @@ pipeline {
         // }
         stage('Running Application') {
             steps{
-                sh 'nohup npm run start&'
+                sh 'forever start -c "npm start" ./'
             }
         }
         stage('Code Coverage') {
