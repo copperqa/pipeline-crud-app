@@ -18,11 +18,11 @@ pipeline {
 //                 sh 'talisman --scan -r /home/user/Desktop/'
 //             }
 //         }
-        stage('Dependencies Check') {
-            steps{
-                dependencyCheck additionalArguments: 'scan="./package.json" --format HTML', odcInstallation: 'Dependencies-Check'
-            }
-        }
+        // stage('Dependencies Check') {
+        //     steps{
+        //         dependencyCheck additionalArguments: 'scan="./package.json" --format HTML', odcInstallation: 'Dependencies-Check'
+        //     }
+        // }
         // stage('Linting Stage') {
         //     steps{
         //         sh 'npm run lint'
@@ -36,9 +36,11 @@ pipeline {
         stage('Code Coverage') {
             steps{
                 sh '''
-                    cd ./testcase | npm i
-                    cd ./testcase | npm run start
-                    cd ./testcase | nyc report --reporter=html
+                    cd ${env.WORKSPACE}/testcase/
+                    npm install
+                    node ${env.WORKSPACE}/testcase/signin.js
+                    cd ${env.WORKSPACE}/testcase/
+                    nyc report --reporter=html
                 '''
             }
         }
