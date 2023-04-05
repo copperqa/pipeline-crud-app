@@ -30,8 +30,10 @@ pipeline {
         // }
         stage('Running Application') {
             steps{
-                // sh 'nohup bash -c "npm start 2>&1 &" && sleep 4'
-                sh 'screen -dm npm start'
+                sh '''
+                screen -dm npm start
+                sleep 5
+                '''
             }
         }
         stage('Code Coverage') {
