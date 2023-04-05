@@ -36,10 +36,9 @@ pipeline {
         stage('Code Coverage') {
             steps{
                 sh '''
-                    cd ${env.WORKSPACE}/testcase/
+                    cd ./testcase/
                     npm install
-                    node ${env.WORKSPACE}/testcase/signin.js
-                    cd ${env.WORKSPACE}/testcase/
+                    node signin.js
                     nyc report --reporter=html
                 '''
             }
