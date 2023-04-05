@@ -33,15 +33,15 @@ pipeline {
                 sh 'nohup npm run start &'
             }
         }
-        // stage('Code Coverage') {
-        //     steps{
-        //         sh '''
-        //             cd ./testcase/
-        //             npm install
-        //             node signin.js
-        //             nyc report --reporter=html
-        //         '''
-        //     }
-        // }
+        stage('Code Coverage') {
+            steps{
+                sh '''
+                    cd ./testcase/
+                    npm install
+                    node signin.js
+                    nyc report --reporter=html
+                '''
+            }
+        }
     }
 }
