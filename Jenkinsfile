@@ -37,8 +37,8 @@ pipeline {
             steps{
                 sh '''
                     cd ./testcase | npm i
-                    npm run start
-                    nyc report --reporter=html
+                    cd ./testcase | npm run start
+                    cd ./testcase | nyc report --reporter=html
                 '''
             }
         }
