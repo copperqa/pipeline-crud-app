@@ -28,14 +28,15 @@ pipeline {
         //         sh 'npm run lint'
         //     }
         // }
-        stage('Running Application') {
-            steps{
-                sh 'nohup bash -c "npm start 2>&1 &" && sleep 4'
-            }
-        }
+        // stage('Running Application') {
+        //     steps{
+        //         sh 'nohup bash -c "npm start 2>&1 &" && sleep 4'
+        //     }
+        // }
         stage('Code Coverage') {
             steps{
                 sh '''
+                    nohup bash -c "npm start 2>&1 &" && sleep 4
                     cd ./testcase/
                     npm install
                     node signin.js
