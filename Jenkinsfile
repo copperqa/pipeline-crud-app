@@ -18,6 +18,11 @@ pipeline {
 //                 sh 'talisman --scan -r /home/user/Desktop/'
 //             }
 //         }
+        stage('Dependencies Check') {
+            steps{
+                dependencyCheck additionalArguments: 'scan="./package.json" --format HTML', odcInstallation: 'Dependencies-Check'
+            }
+        }
         stage('Linting Stage') {
             steps{
                 sh 'npm run lint'
