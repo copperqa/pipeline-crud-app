@@ -28,11 +28,11 @@ pipeline {
         //         sh 'npm run lint'
         //     }
         // }
-        stage('Running Application') {
-            steps{
-                sh 'nohup npm run start &'
-            }
-        }
+        // stage('Running Application') {
+        //     steps{
+        //         sh 'nohup npm run start &'
+        //     }
+        // }
         stage('Code Coverage') {
             steps{
                 sh '''
