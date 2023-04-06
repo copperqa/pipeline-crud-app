@@ -1,5 +1,9 @@
 pipeline {
     agent {label 'linux'}
+
+    enviroment {
+        SONARSCANNER: 'sonarqube'
+    }
     stages {
         stage('Cloning the repository'){
             steps {
@@ -34,9 +38,16 @@ pipeline {
         //     }
         // }
         stage('SonarQube Analysis') {
-                def scannerHome = tool 'SonarScanner';
+
+            enviroment {
+                scannerHome = tool "${SONARSCANNER}"
+            }
+
+            steps{
+                def scannerHome = tool '${}';
                 withSonarQubeEnv(installationName: 'sonarqube') {
                     sh "${scannerHome}/bin/sonar-scanner"
+                }
             }
         }
         stage('Running Application') {
