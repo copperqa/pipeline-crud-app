@@ -48,6 +48,7 @@ pipeline {
                     npm install
                     node signin.js
                     nyc report --reporter=html
+                    sleep 5
                 '''
             }
         }
