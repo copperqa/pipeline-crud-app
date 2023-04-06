@@ -11,13 +11,15 @@ pipeline {
                 sh 'npm install'
             }
         }
-//         stage('Pre-commit check') {
-//             steps{
-//                 sh 'result=${PWD##*/}'
-//                 sh 'git config --global --add safe.directory /var/lib/jenkins/workspace/$result'
-//                 sh 'talisman --scan -r /home/user/Desktop/'
-//             }
-//         }
+        stage('Pre-commit check') {
+            steps{
+                sh '''
+                result=${PWD##*/}
+                git config --global --add safe.directory /var/lib/jenkins/workspace/$result
+                talisman --scan -r /home/user/Desktop/
+                '''
+            }
+        }
         stage('Dependencies Check') {
             steps{
                 dependencyCheck additionalArguments: '--scan="./package.json" --format HTML', odcInstallation: 'Dependencies-Check'
