@@ -19,7 +19,7 @@ pipeline {
                 export TALISMAN_HOME=/root/.talisman/bin && alias talisman=$TALISMAN_HOME/talisman_linux_amd64
                 export TALISMAN_INTERACTIVE=true
                 pwd
-                talisman --scan -r /home/user/Desktop/
+                sudo talisman --scan -r /home/user/Desktop/
                 '''
             }
         }
