@@ -1,4 +1,6 @@
 fileignoreconfig:
+- filename: sonar-project.properties
+  checksum: c29196737a821724ef5f13f6b10599c4b50bcf8b519cc235a63878b08ba776c3
 - filename: talisman_html_report/css/bootstrap.min.css
   checksum: 78b16deaf26c127ee1877e41d1eebb8f4995c264f9912c450223fd37e77e7ee5
 - filename: talisman_html_report/css/fontAwesome.css

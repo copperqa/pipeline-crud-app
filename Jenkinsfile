@@ -33,6 +33,12 @@ pipeline {
         //         checkmarxASTScanner additionalOptions: '--project-tags jenkins --scan-types sast.sca.kics --file-source git@github.com:copperdevops/nestjs-crud-app.git --debug', baseAuthUrl: '', branchName: 'usguleria', checkmarxInstallation: 'CLI-configuration', credentialsId: '', projectName: 'crud-application', serverUrl: '', tenantName: '', useOwnAdditionalOptions: true
         //     }
         // }
+        stage('SonarQube Analysis') {
+            def scannerHome = tool 'SonarScanner';
+            withSonarQubeEnv() {
+                sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }
         stage('Running Application') {
             steps{
                 sh '''
@@ -48,7 +54,6 @@ pipeline {
                     npm install
                     node signin.js
                     nyc report --reporter=html
-                    sleep 5
                 '''
             }
         }
