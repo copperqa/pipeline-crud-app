@@ -28,11 +28,6 @@ pipeline {
         //         sh 'npm run lint'
         //     }
         // }
-        // stage('SAST stage') {
-        //     steps{
-        //         checkmarxASTScanner additionalOptions: '--project-tags jenkins --scan-types sast.sca.kics --file-source git@github.com:copperdevops/nestjs-crud-app.git --debug', baseAuthUrl: '', branchName: 'usguleria', checkmarxInstallation: 'CLI-configuration', credentialsId: '', projectName: 'crud-application', serverUrl: '', tenantName: '', useOwnAdditionalOptions: true
-        //     }
-        // }
         stage('SonarQube Analysis') {
             steps{
                 script {
