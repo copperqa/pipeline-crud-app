@@ -16,10 +16,10 @@ pipeline {
                 sh '''
                 result=${PWD##*/}
                 git config --global --add safe.directory /var/lib/jenkins/workspace/'$result'
-                export TALISMAN_HOME=/root/.talisman/bin && alias talisman=$TALISMAN_HOME/talisman_linux_amd64
+                export TALISMAN_HOME=/home/user/.talisman/bin && alias talisman=$TALISMAN_HOME/talisman_linux_amd64
                 export TALISMAN_INTERACTIVE=true
                 pwd
-                sudo talisman --scan -r /home/user/Desktop/
+                talisman --scan -r /home/user/Desktop/
                 '''
             }
         }
