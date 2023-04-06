@@ -34,11 +34,9 @@ pipeline {
         //     }
         // }
         stage('SonarQube Analysis') {
-            steps{
                 def scannerHome = tool 'SonarScanner';
                 withSonarQubeEnv(installationName: 'sonarqube') {
                     sh "${scannerHome}/bin/sonar-scanner"
-                }
             }
         }
         stage('Running Application') {
