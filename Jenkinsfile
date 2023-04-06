@@ -15,7 +15,7 @@ pipeline {
             steps{
                 sh '''
                 result=${PWD##*/}
-                git config --global --add safe.directory /var/lib/jenkins/workspace/$result
+                git config --global --add safe.directory /var/lib/jenkins/workspace/'$result'
                 talisman --scan -r /home/user/Desktop/
                 '''
             }
