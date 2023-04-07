@@ -267,27 +267,28 @@ function run() {
 
     echo -e "\n\nPLEASE CHOOSE WHERE YOU WISH TO SET TALISMAN_HOME VARIABLE AND talisman binary PATH (Enter option number): "
     options=(${BASHRC_OPT} ${BASHPROFILE_OPT} ${PROFILE_OPT} ${SELFSETUP_OPT})
-    select opt in "${options[@]}"; do
-      case $opt in
-      ${BASHRC_OPT})
-        set_talisman_home_and_binary_path ~/.bashrc
-        break
-        ;;
-      ${BASHPROFILE_OPT})
-        set_talisman_home_and_binary_path ~/.bash_profile
-        break
-        ;;
-      ${PROFILE_OPT})
-        set_talisman_home_and_binary_path ~/.profile
-        break
-        ;;
-      ${SELFSETUP_OPT})
-        echo "You chose to set TALISMAN_HOME and binary path by yourself. Remember to set TALISMAN_HOME=${TALISMAN_SETUP_DIR} and alias talisman =${TALISMAN_SETUP_DIR}/${TALISMAN_BINARY_NAME}\n\n"
-        break
-        ;;
-      *) echo "invalid option $REPLY" ;;
-      esac
-    done
+    set_talisman_home_and_binary_path ~/.bashrc
+    # select opt in "${options[@]}"; do
+    #   case $opt in
+    #   ${BASHRC_OPT})
+    #     set_talisman_home_and_binary_path ~/.bashrc
+    #     break
+    #     ;;
+    #   ${BASHPROFILE_OPT})
+    #     set_talisman_home_and_binary_path ~/.bash_profile
+    #     break
+    #     ;;
+    #   ${PROFILE_OPT})
+    #     set_talisman_home_and_binary_path ~/.profile
+    #     break
+    #     ;;
+    #   ${SELFSETUP_OPT})
+    #     echo "You chose to set TALISMAN_HOME and binary path by yourself. Remember to set TALISMAN_HOME=${TALISMAN_SETUP_DIR} and alias talisman =${TALISMAN_SETUP_DIR}/${TALISMAN_BINARY_NAME}\n\n"
+    #     break
+    #     ;;
+    #   *) echo "invalid option $REPLY" ;;
+    #   esac
+    # done
   }
 
   function set_talisman_interactive_mode() {
