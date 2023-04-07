@@ -7,7 +7,7 @@
 # install project
 $ git clone "Repository link"
 # open app directory
-$ cd react-crud-application
+$ cd nestjs-crud-app
 # install dependencies
 $ npm i || npm install
 # start
