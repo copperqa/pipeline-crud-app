@@ -1,4 +1,6 @@
 fileignoreconfig:
+- filename: install-talisman-hook.sh
+  checksum: 7e24f19916e5919f9ec9a42b23ecd255760f3488060734daf631c09d857442d1
 - filename: sonar-project.properties
   checksum: c29196737a821724ef5f13f6b10599c4b50bcf8b519cc235a63878b08ba776c3
 - filename: talisman_html_report/css/bootstrap.min.css
