@@ -40,7 +40,8 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-
+package-lock.json
+talisman_html_report/
 # TypeScript v1 declaration files
 typings/
 
