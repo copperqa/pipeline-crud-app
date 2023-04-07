@@ -16,7 +16,7 @@ pipeline {
                 sh '''
                 result=${PWD##*/}
                 git config --global --add safe.directory /var/lib/jenkins/workspace/'$result'
-                chown jenkins:jenkins ./install-talisman.sh
+                chown jenkins:jenkins ./install-talisman-hook.sh
                 bash install-talisman-hook.sh pre-commit
                 talisman --scan
                 '''
