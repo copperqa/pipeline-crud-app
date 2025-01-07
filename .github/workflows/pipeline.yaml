@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        directory: ${{ fromJson(needs.detect-changes.outputs.matrix || '[]') || [github.event.inputs.directory] }}
+        directory: ${{ fromJson(needs.detect-changes.outputs.matrix || '[]') }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
