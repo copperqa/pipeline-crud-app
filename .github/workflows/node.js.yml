@@ -40,17 +40,16 @@ on:
       - 'case3/**'
     branches:
       - oidc-test
-  workflow_dispatch:
+  orkflow_dispatch:
     inputs:
-      environment:
-        description: 'Environment to deploy to (e.g., dev, staging, production)'
+      directory:
+        description: "Directory to deploy"
         required: true
-        default: 'dev'
         type: choice
         options:
-          - dev
-          - staging
-          - production
+          - testcase
+          - case2
+          - case3
 
 permissions:
   id-token: write
@@ -61,6 +60,7 @@ env:
 
 jobs:
   detect-changes:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -73,18 +73,18 @@ jobs:
       - name: Detect changed directories
         id: set-matrix
         run: |
-          echo "Detecting changes in repository..."
+          echo "Detecting changes..."
           changed_dirs=$(git diff --name-only HEAD^ HEAD | grep -E '^(testcase|case2|case3)/' | cut -d/ -f1 | sort | uniq)
           echo "Detected changes in: $changed_dirs"
           matrix_json=$(echo "$changed_dirs" | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "matrix=$matrix_json" >> $GITHUB_OUTPUT
 
   build-and-deploy:
-    needs: detect-changes
+    needs: [detect-changes]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        directory: ${{ fromJson(needs.detect-changes.outputs.matrix || '[]') }}
+        directory: ${{ fromJson(needs.detect-changes.outputs.matrix || '[]') || [github.event.inputs.directory] }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
