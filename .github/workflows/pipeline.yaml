@@ -1,0 +1,112 @@
+name: Test Project
+
+on:
+  push:
+    paths:
+      - 'testcase/**'
+      - 'case2/**'
+      - 'case3/**'
+    branches:
+      - oidc-test
+  workflow_dispatch:
+    inputs:
+      directory:
+        description: "Directory to deploy"
+        required: true
+        type: choice
+        options:
+          - testcase
+          - case2
+          - case3
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: "us-east-1"
+
+jobs:
+  detect-changes:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Detect changed directories
+        id: set-matrix
+        run: |
+          echo "Detecting changes..."
+          changed_dirs=$(git diff --name-only HEAD^ HEAD | grep -E '^(testcase|case2|case3)/' | cut -d/ -f1 | sort | uniq)
+          if [[ -z "$changed_dirs" ]]; then
+            echo "No changes detected. Exiting..."
+            echo "matrix=[]" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "Detected changes in: $changed_dirs"
+          matrix_json=$(echo "$changed_dirs" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "matrix=$matrix_json" >> $GITHUB_OUTPUT
+
+  build-and-deploy:
+    needs: [detect-changes]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ${{ fromJson(needs.detect-changes.outputs.matrix || '[]') || [github.event.inputs.directory] }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set environment-specific values
+        run: |
+          echo "Setting environment-specific values for ${{ matrix.directory }}..."
+          case "${{ matrix.directory }}" in
+            "testcase")
+              echo "ECR_REPOSITORY=testcase-repo" >> $GITHUB_ENV
+              echo "ECS_CLUSTER=dev-testcase-cluster" >> $GITHUB_ENV
+              echo "SERVICE_NAME=dev-testcase-service" >> $GITHUB_ENV
+              ;;
+            "case2")
+              echo "ECR_REPOSITORY=case2-repo" >> $GITHUB_ENV
+              echo "ECS_CLUSTER=dev-case2-cluster" >> $GITHUB_ENV
+              echo "SERVICE_NAME=dev-case2-service" >> $GITHUB_ENV
+              ;;
+            "case3")
+              echo "ECR_REPOSITORY=case3-repo" >> $GITHUB_ENV
+              echo "ECS_CLUSTER=dev-case3-cluster" >> $GITHUB_ENV
+              echo "SERVICE_NAME=dev-case3-service" >> $GITHUB_ENV
+              ;;
+            *)
+              echo "Unknown service: ${{ matrix.directory }}"
+              exit 1
+              ;;
+          esac
+
+      - name: Build Docker image
+        env:
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+        run: |
+          echo "Building Docker image for ${{ matrix.directory }}..."
+          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:latest ./${{ matrix.directory }}
+
+      - name: Push Docker image
+        env:
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+        run: |
+          echo "Pushing Docker image for ${{ matrix.directory }}..."
+          docker tag $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:latest $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:latest
+          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:latest
+
+      - name: Update ECS service
+        run: |
+          echo "Updating ECS service for ${{ matrix.directory }}..."
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.SERVICE_NAME }} \
+            --force-new-deployment
+          echo "Successfully updated service: ${{ env.SERVICE_NAME }}"
