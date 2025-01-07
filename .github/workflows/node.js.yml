@@ -40,7 +40,7 @@ on:
       - 'case3/**'
     branches:
       - oidc-test
-  orkflow_dispatch:
+  workflow_dispatch:
     inputs:
       directory:
         description: "Directory to deploy"
