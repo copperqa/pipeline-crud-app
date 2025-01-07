@@ -7,7 +7,7 @@ on:
       - 'case2/**'
       - 'case3/**'
     branches:
-      - oidc-test
+      - main
   workflow_dispatch:
     inputs:
       directory:
