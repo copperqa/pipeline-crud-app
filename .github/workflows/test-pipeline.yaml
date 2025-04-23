@@ -1,0 +1,54 @@
+name: build-deploy-go-api
+
+on:
+  push:
+    branches:
+      - develop
+      - qa
+      - staging
+      - main
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        description: Select the environment
+        type: choice
+        options:
+          - dev1
+          - dev2
+          - qa
+          
+permissions:
+  id-token: write
+  contents: write
+
+env:
+  IMAGE_TAG: latest
+  GOPRIVATE: github.com/tissue-health-plus
+  AWS_REGION: "us-east-1"
+
+jobs:
+  build:
+    name: Build and Deploy go-api
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || github.ref_name == 'main' && 'production' || github.ref_name == 'develop' && 'development' || github.ref_name }}
+
+    steps:
+      - name: Determine and echo environment
+        id: env-check
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            ENV_NAME="${{ github.event.inputs.environment }}"
+          elif [[ "${{ github.ref_name }}" == "main" ]]; then
+            ENV_NAME="production"
+          elif [[ "${{ github.ref_name }}" == "develop" ]]; then
+            ENV_NAME="development"
+          else
+            ENV_NAME="${{ github.ref_name }}"
+          fi
+    
+          echo "Resolved Environment: $ENV_NAME"
+          echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV
+          
