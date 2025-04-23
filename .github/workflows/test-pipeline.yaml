@@ -51,4 +51,8 @@ jobs:
     
           echo "Resolved Environment: $ENV_NAME"
           echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV
-          
+
+      - name: Echo environment
+        if: contains('dev1,dev2,development,production', env.ENV_NAME)
+        run: |
+          echo "The current environment is: ${ENV_NAME}"
