@@ -71,7 +71,7 @@ jobs:
       - name: Wait for ECS deployment to stabilize
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
-          CLUSTER_NAME: ${{ env.CLUSTER_NAME }}
+          CLUSTER_NAME: ${{ env.ECS_CLUSTER }}
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
         run: |
           echo "${AWS_REGION}" \
