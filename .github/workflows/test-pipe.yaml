@@ -1,0 +1,26 @@
+name: Deploy AI Module Microservices to AWS 
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Deploy to Production Environment"
+        required: true
+        default: "prod"
+        type: choice
+        options:
+          - production
+      api_directory:
+        description: "Select the AI service to deploy to Production"
+        required: true
+        type: choice
+        options:
+          - complexityAI
+          - etiologyAI
+          - rafAI
+          - interventionAI
+          - droolsAPI
+          - productAI_v02_1
+          - reimbursementAI
+          - careplanAI
+          - CarePlanGeneration
