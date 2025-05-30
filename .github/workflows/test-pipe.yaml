@@ -24,3 +24,81 @@ on:
           - reimbursementAI
           - careplanAI
           - CarePlanGeneration
+jobs:
+  detect-changes:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/DO-450'
+    runs-on: ubuntu-latest
+    
+  deploy-prod:
+    name: Deploy to Production Environment
+    if: github.event_name == 'workflow_dispatch'
+    environment: prod
+    runs-on: ubuntu-latest
+    env:
+      SELECTED_DIRECTORY: ${{ github.event.inputs.api_directory }}
+      
+    steps:
+      - name: Set Prod environment-specific values
+        run: |
+          echo "Setting the production environment values"
+          echo "ECS_CLUSTER=production-cluster" >> $GITHUB_ENV
+          echo "$SELECTED_DIRECTORY"
+
+          case "$SELECTED_DIRECTORY" in
+            "complexityAI")
+              echo "SERVICE_NAME=prod-complexity-ai" >> $GITHUB_ENV
+              echo "TG_FILE_Name=complexity-ai" >> $GITHUB_ENV
+              echo "ECR_REPOSITORY=complexity-ai" >> $GITHUB_ENV
+              ;;
+            "etiologyAI")
+              echo "SERVICE_NAME=prod-etiology-ai" >> $GITHUB_ENV
+              echo "TG_FILE_Name=etiology-ai" >> $GITHUB_ENV
+              echo "ECR_REPOSITORY=etiology-ai" >> $GITHUB_ENV
+              ;;
+            "rafAI")
+              echo "SERVICE_NAME=prod-raf-ai" >> $GITHUB_ENV
+              echo "TG_FILE_Name=raf-ai" >> $GITHUB_ENV
+              echo "ECR_REPOSITORY=raf-ai" >> $GITHUB_ENV
+              ;;
+            "interventionAI")
+              echo "SERVICE_NAME=prod-intervention-ai" >> $GITHUB_ENV
+              echo "TG_FILE_Name=intervention-ai" >> $GITHUB_ENV
+              echo "ECR_REPOSITORY=intervention-ai" >> $GITHUB_ENV
+              ;;
+            "droolsAPI")
+              echo "SERVICE_NAME=prod-drools-api" >> $GITHUB_ENV
+              echo "TG_FILE_Name=drools-api" >> $GITHUB_ENV
+              echo "ECR_REPOSITORY=drools-api" >> $GITHUB_ENV
+              ;;
+            "productAI_v02_1")
+              echo "SERVICE_NAME=prod-product-ai" >> $GITHUB_ENV
+              echo "TG_FILE_Name=product-ai" >> $GITHUB_ENV
+              echo "ECR_REPOSITORY=product-ai" >> $GITHUB_ENV
+              ;;
+            "reimbursementAI")
+              echo "SERVICE_NAME=prod-reimbursement-ai" >> $GITHUB_ENV
+              echo "TG_FILE_Name=reimbursement-ai" >> $GITHUB_ENV
+              echo "ECR_REPOSITORY=reimbursement-ai" >> $GITHUB_ENV
+              ;;
+            "careplanAI")
+              echo "SERVICE_NAME=prod-careplan-ai" >> $GITHUB_ENV
+              echo "TG_FILE_Name=careplan-ai" >> $GITHUB_ENV
+              echo "ECR_REPOSITORY=careplan-ai" >> $GITHUB_ENV
+              ;;
+            "CarePlanGeneration")
+              echo "SERVICE_NAME=prod-careplan-generation" >> $GITHUB_ENV
+              echo "TG_FILE_Name=careplan-generation" >> $GITHUB_ENV
+              echo "ECR_REPOSITORY=careplan-generation" >> $GITHUB_ENV
+              ;;
+            *)
+              echo "Unknown directory: $SELECTED_DIRECTORY"
+              exit 1
+              ;;
+          esac
+      - name: Extract Staging full image reference from production terragrunt.hcl
+        id: extract_sha
+        env:
+          TG_FILE_NAME: ${{ env.TG_FILE_Name }}
+        run: |
+          file_path="thp-tf-infra/aws/us-east-1/stage/ecs/service/${TG_FILE_NAME}/terragrunt.hcl"
+          echo "Reading image line from $file_path"
