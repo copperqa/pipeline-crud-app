@@ -28,6 +28,11 @@ jobs:
   detect-changes:
     if: github.event_name == 'push' && github.ref == 'refs/heads/DO-450'
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
     
   deploy-prod:
     name: Deploy to Production Environment
