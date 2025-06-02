@@ -31,3 +31,15 @@ jobs:
     steps:
       - name: Set dispatched version
         run: echo "DEPLOY_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+      - name: Validate version format
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          if [[ "$VERSION" =~ ^v ]]; then
+            echo "::error ::Version should not start with 'v'. Please enter without 'v', like '0.1.238'"
+            exit 1
+          fi
+
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error ::Invalid version format. Please use 'X.Y.Z' format like '0.1.238'"
+            exit 1
+          fi
