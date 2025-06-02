@@ -1,0 +1,33 @@
+name: Deploy App API AWS
+on:
+  push:
+    branches:
+      - update-workflow
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        description: Select the environment app-api to deploy to
+        type: choice
+        options:
+          - development
+          - dev2
+          - qa
+          - staging
+          - production
+      
+      version:
+        required: true
+        description: Enter the semantic version to deploy (e.g. v0.1.238)
+        type: string
+        
+jobs:
+  build:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'development'
+    name: Build the Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set dispatched version
+        run: echo "DEPLOY_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
