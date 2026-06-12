@@ -9,7 +9,6 @@ COPY . /app
 
 # 4. Install dependencies
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
 
 # 5. Set environment variable
 ENV FLASK_APP=crudapp.py
