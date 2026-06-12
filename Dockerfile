@@ -1,20 +1,29 @@
-# 1. Base image (Node)
-FROM node:18
+# Build stage
+FROM node:18 AS build
 
-# 2. Set working directory
 WORKDIR /app
 
-# 3. Copy dependency files first (better caching)
+# Copy dependency files
 COPY package*.json ./
 
-# 4. Install Node dependencies
+# Install dependencies
 RUN npm install
 
-# 5. Copy application code
+# Copy source
 COPY . .
 
-# 6. Expose application port
-EXPOSE 3000
+# Create production build
+RUN npm run build
 
-# 7. Start application
-CMD ["npm", "run", "start"]
+
+# Production stage
+FROM nginx:alpine
+
+# Copy React build output to nginx
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose nginx port
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
