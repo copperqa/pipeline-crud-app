@@ -1,25 +1,20 @@
-# 1. Base image (Python)
-FROM python:3.8-slim
+# 1. Base image (Node)
+FROM node:18
 
-# 2. Set working directory inside container
+# 2. Set working directory
 WORKDIR /app
 
-# 3. Copy all project files into container
-COPY . /app
+# 3. Copy dependency files first (better caching)
+COPY package*.json ./
 
-# 4. Install dependencies
-RUN pip install --upgrade pip
+# 4. Install Node dependencies
+RUN npm install
 
-# 5. Set environment variable
-ENV FLASK_APP=crudapp.py
+# 5. Copy application code
+COPY . .
 
-# 6. Initialize database (IMPORTANT for this project)
-RUN flask db init || true
-RUN flask db migrate -m "init" || true
-RUN flask db upgrade || true
+# 6. Expose application port
+EXPOSE 3000
 
-# 7. Expose port
-EXPOSE 5000
-
-# 8. Run the app
-CMD ["flask", "run", "--host=0.0.0.0"]
+# 7. Start application
+CMD ["npm", "run", "start"]
